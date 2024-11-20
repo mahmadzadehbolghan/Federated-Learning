@@ -1,0 +1,29 @@
+### Non-IID Data in Federated Learning
+In federated learning, **non-IID** refers to the scenario where the data distribution on each client is different, which contrasts with the IID scenario, where each client has identically distributed data. Your code demonstrates several features of non-IID FL, such as:
+
+1. **Non-IID Data Sharding**:
+   - The `create_clients` function divides the training data into shards and assigns each shard to a different client. The sizes of these shards are random, and the data assigned to each client is not necessarily representative of the global data distribution.
+   - The function uses the `generate_random_numbers` to randomly allocate a portion of data to each client based on a normalized distribution, making the data each client has different in terms of class distributions.
+
+2. **Client-Specific Scaling**:
+   - Each client has a different scaling factor applied to its local model updates, which further emphasizes the non-IID nature. The `Tx_Scaling` and `Rx_Scaling` functions modify the models' parameters based on the client’s local characteristics (e.g., scaling coefficients).
+   
+3. **Rayleigh Coefficients**:
+   - The `generate_rayleigh_coefficient` function generates random Rayleigh coefficients for each client, introducing randomness and potentially reflecting different communication or data conditions for each client.
+
+4. **Model Weight Aggregation**:
+   - After each round, the model weights from different clients are aggregated with a scaling factor that depends on the size of the client’s dataset and its scaling coefficient. This reflects the clients’ varying data distributions and the fact that each client's data is treated differently.
+
+5. **Noise Injection**:
+   - Noise is added to the gradients during the aggregation step (`sum_scaled_weights` function). This noise injection is used to simulate the variations and imperfections in the data from different clients, which is typical in non-IID settings.
+
+6. **Different Client Data Distributions**:
+   - Since the data is shuffled and partitioned differently for each client, the data on each client is likely to have different class distributions, further contributing to the non-IID nature of the training.
+
+### Summary:
+This code implements **non-IID federated learning** because:
+- It assigns different data distributions to different clients.
+- It scales and aggregates the weights differently for each client based on their data shard size and other local characteristics (e.g., Rayleigh coefficients).
+- The communication rounds involve updating global model weights with contributions from non-IID local client models.
+
+These factors together characterize the learning process as **non-IID federated learning**.
